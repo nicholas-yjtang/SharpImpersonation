@@ -192,7 +192,9 @@ namespace SharpImpersonation
                     UniqueProcess = new IntPtr(p.Id),
                     UniqueThread = IntPtr.Zero
                 };
+#if DEBUG
                 Console.WriteLine("[*] Attempting to open process ID: " + p.Id);
+#endif
                 InvokeItDynamically.Native.NTSTATUS statusresult;
 
                 statusresult = OpenProc(
