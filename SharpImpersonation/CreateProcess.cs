@@ -45,22 +45,26 @@ namespace SharpImpersonation
             _PROCESS_INFORMATION processInformation = new _PROCESS_INFORMATION();
 
             UnicodeEncoding unicode = new UnicodeEncoding();
-            Byte[] unicodeapp = unicode.GetBytes(name);
-            Byte[] unicodeargs = unicode.GetBytes(name + " " + arguments);
+            Byte[] unicodeapp = unicode.GetBytes(name + "\0");
+            Byte[] unicodeargs = unicode.GetBytes(name + " " + arguments + "\0");
 
+            string pDir = "C:\\Windows\\Tasks";
             object[] CreateProcessWithLogonWArgs =
             {
-                "i", "j", "k",
+                "i",
+                "j",
+                "k",
                 LOGON_FLAGS.LOGON_NETCREDENTIALS_ONLY,
                 unicodeapp,
                 unicodeargs,
                 CREATION_FLAGS.CREATE_DEFAULT_ERROR_MODE,
                 IntPtr.Zero,
-                Environment.CurrentDirectory,
+                pDir,
                 startupInfo,
                 processInformation
             };
 
+            Console.WriteLine("[*] Invoking CreateProcessWithLogonW with C:\\Windows\\Tasks");
             bool success = (bool)InvokeItDynamically.DynGen.DynamicAPIInvoke("advapi32.dll", "CreateProcessWithLogonW", typeof(CreateProcessWithLogonW), ref CreateProcessWithLogonWArgs, true, true);
             processInformation = (SharpImpersonation._PROCESS_INFORMATION)CreateProcessWithLogonWArgs[10];
 
@@ -118,8 +122,9 @@ namespace SharpImpersonation
 
             // Error binary path not found
             UnicodeEncoding unicode = new UnicodeEncoding();
-            Byte[] unicodeapp = unicode.GetBytes(name);
-            Byte[] unicodeargs = unicode.GetBytes(name + " " + arguments);
+            Byte[] unicodeapp = unicode.GetBytes(name + "\0");
+            Byte[] unicodeargs = unicode.GetBytes(name + " " + arguments + "\0");
+            string pDir = "C:\\Windows\\Tasks";
             object[] CreateProcessWithTokenWArgs =
             {
                 phNewToken,
@@ -132,7 +137,6 @@ namespace SharpImpersonation
                 startupInfo,
                 processInformation
             };
-
             bool success = (bool)InvokeItDynamically.DynGen.DynamicAPIInvoke("advapi32.dll", "CreateProcessWithTokenW", typeof(CreateProcessWithTokenW), ref CreateProcessWithTokenWArgs, true, true);
             processInformation = (_PROCESS_INFORMATION)CreateProcessWithTokenWArgs[8];
 

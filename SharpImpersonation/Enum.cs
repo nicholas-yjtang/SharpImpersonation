@@ -180,12 +180,19 @@ namespace SharpImpersonation
 
                 IntPtr hProcess = IntPtr.Zero;
                 OBJECT_ATTRIBUTES oa = new OBJECT_ATTRIBUTES();
+                oa.Length = Marshal.SizeOf(typeof(OBJECT_ATTRIBUTES));
+                oa.RootDirectory = IntPtr.Zero;
+                oa.ObjectName = IntPtr.Zero;
+                oa.Attributes = 0;
+                oa.SecurityDescriptor = IntPtr.Zero;
+                oa.SecurityQualityOfService = IntPtr.Zero;
 
                 CLIENT_ID ci = new CLIENT_ID
                 {
-                    UniqueProcess = (IntPtr)((UInt32)p.Id)
+                    UniqueProcess = new IntPtr(p.Id),
+                    UniqueThread = IntPtr.Zero
                 };
-
+                Console.WriteLine("[*] Attempting to open process ID: " + p.Id);
                 InvokeItDynamically.Native.NTSTATUS statusresult;
 
                 statusresult = OpenProc(
@@ -440,10 +447,18 @@ namespace SharpImpersonation
 
                 IntPtr hProcess = IntPtr.Zero;
                 OBJECT_ATTRIBUTES oa = new OBJECT_ATTRIBUTES();
+                oa.Length = Marshal.SizeOf(typeof(OBJECT_ATTRIBUTES));
+                oa.RootDirectory = IntPtr.Zero;
+                oa.ObjectName = IntPtr.Zero;
+                oa.Attributes = 0;
+                oa.SecurityDescriptor = IntPtr.Zero;
+                oa.SecurityQualityOfService = IntPtr.Zero;
 
+                Console.WriteLine("[*] Examining process ID: " + p.Id);
                 CLIENT_ID ci = new CLIENT_ID
                 {
-                    UniqueProcess = (IntPtr)((UInt32)p.Id)
+                    UniqueProcess = new IntPtr(p.Id),
+                    UniqueThread = IntPtr.Zero
                 };
 
                 InvokeItDynamically.Native.NTSTATUS statusresult;

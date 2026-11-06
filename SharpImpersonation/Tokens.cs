@@ -170,14 +170,8 @@ namespace SharpImpersonation
             Console.WriteLine(" [+] Duplicate Token Handle: 0x{0}", phNewToken.ToString("X4"));
 
             Create createProcess;
-            if (0 == Process.GetCurrentProcess().SessionId)
-            {
-                createProcess = CreateProcess.CreateProcessWithLogonW;
-            }
-            else
-            {
-                createProcess = CreateProcess.CreateProcessWithTokenW;
-            }
+            createProcess = CreateProcess.CreateProcessWithTokenW;
+
             String arguments = String.Empty;
             FindExe(ref newProcess, out arguments);
             string priv = "SeAuditPrivilege";

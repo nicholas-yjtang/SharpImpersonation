@@ -152,11 +152,11 @@ ref CLIENT_ID ClientId);
     public struct OBJECT_ATTRIBUTES
     {
         public int Length;
-        public uint RootDirectory;
+        public IntPtr RootDirectory;
         public IntPtr ObjectName;
         public uint Attributes;
         public IntPtr SecurityDescriptor;
-        public SecurityQualityOfService SecurityQualityOfService;
+        public IntPtr SecurityQualityOfService;
     }
     
 
